@@ -55,7 +55,7 @@ class ZenggeLight(LightEntity):
 
     _attr_supported_color_modes = {ColorMode.HS, ColorMode.WHITE}
 
-    def __init__(self, device):
+    async def __init__(self, device):
         """Initialize the light."""
 
         self._attr_name = device["name"]
@@ -66,7 +66,7 @@ class ZenggeLight(LightEntity):
         self._attr_brightness = 0
         self._attr_hs_color = (0, 0)
         self._attr_is_on = False
-        if self._bulb.connect() is False:
+        if await self._bulb.connect() is False:
             self.is_valid = False
             _LOGGER.error(
                 "Failed to connect to bulb %s, %s", device["address"], device["name"]
@@ -85,18 +85,18 @@ class ZenggeLight(LightEntity):
             return ColorMode.WHITE
         return ColorMode.HS
 
-    def _set_rgb(self, red: int, green: int, blue: int) -> None:
+    async def _set_rgb(self, red: int, green: int, blue: int) -> None:
         """Set the rgb state."""
-        self._bulb.set_rgb(red, green, blue)
+        await self._bulb.set_rgb(red, green, blue)
 
-    def _set_white(self, white):
+    async def _set_white(self, white):
         """Set the white state."""
-        return self._bulb.set_white(white)
+        await self._bulb.set_white(white)
 
-    def turn_on(self, **kwargs: Any) -> None:
+    async def turn_on(self, **kwargs: Any) -> None:
         """Turn the specified light on."""
         self._attr_is_on = True
-        self._bulb.on()
+        await self._bulb.on()
 
         hs_color = kwargs.get(ATTR_HS_COLOR)
         white = kwargs.get(ATTR_WHITE)
@@ -126,10 +126,10 @@ class ZenggeLight(LightEntity):
             )
             self._set_rgb(*rgb)
 
-    def turn_off(self, **kwargs: Any) -> None:
+    async def turn_off(self, **kwargs: Any) -> None:
         """Turn the specified light off."""
         self._attr_is_on = False
-        self._bulb.off()
+        await self._bulb.off()
 
     def update(self) -> None:
         """Synchronise internal state with the actual light state."""
