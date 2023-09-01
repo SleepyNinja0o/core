@@ -2,8 +2,8 @@
   "domain": "zengge",
   "name": "Zengge",
   "codeowners": ["@emontnemery"],
+  "dependencies": ["bluetooth_adapters"],
   "documentation": "https://www.home-assistant.io/integrations/zengge",
   "iot_class": "local_polling",
-  "loggers": ["zengge"],
-  "requirements": ["bluepy==1.3.0", "zengge==0.2"]
+  "loggers": ["zengge"]
 }
