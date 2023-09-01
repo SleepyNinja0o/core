@@ -5,7 +5,7 @@ import logging
 from typing import Any
 
 import voluptuous as vol
-from zengge import zengge
+from . import zengge_bleak as zengge
 
 from homeassistant.components.light import (
     ATTR_BRIGHTNESS,
