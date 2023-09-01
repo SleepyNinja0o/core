@@ -43,7 +43,7 @@ async def async_setup_platform(
         device = {}
         device["name"] = device_config[CONF_NAME]
         device["address"] = address
-        light = ZenggeLight(device)
+        light = ZenggeLight(hass, device)
         if light.is_valid:
             lights.append(light)
 
@@ -55,13 +55,13 @@ class ZenggeLight(LightEntity):
 
     _attr_supported_color_modes = {ColorMode.HS, ColorMode.WHITE}
 
-    async def __init__(self, device):
+    async def __init__(self, hass, device):
         """Initialize the light."""
 
         self._attr_name = device["name"]
         self._attr_unique_id = device["address"]
         self.is_valid = True
-        self._bulb = zengge(device["address"])
+        self._bulb = zengge(hass, device["address"])
         self._white = 0
         self._attr_brightness = 0
         self._attr_hs_color = (0, 0)
