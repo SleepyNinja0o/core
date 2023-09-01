@@ -31,10 +31,10 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 
-def setup_platform(
+async def async_setup_platform(
     hass: HomeAssistant,
     config: ConfigType,
-    add_entities: AddEntitiesCallback,
+    async_add_entities: AddEntitiesCallback,
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     """Set up the Zengge platform."""
@@ -47,7 +47,7 @@ def setup_platform(
         if light.is_valid:
             lights.append(light)
 
-    add_entities(lights, True)
+    async_add_entities(lights, True)
 
 
 class ZenggeLight(LightEntity):
