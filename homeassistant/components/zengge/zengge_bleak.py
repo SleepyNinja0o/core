@@ -10,6 +10,7 @@
 import time
 
 #from bluepy import btle    #from bluepy lib
+from homeassistant.components import bluetooth
 from bleak import BleakClient, BleakScanner
 from bleak.exc import BleakError
 
@@ -26,8 +27,9 @@ from bleak.exc import BleakError
       self.bulb.set_state(data[9], data[6], data[7], data[8], power)'''
 
 class zengge:
-  def __init__(self, mac):
+  def __init__(self, hass, mac):
     self.mac = mac
+    self.hass = hass
     self.client = None
     self.device = None
     self.NOTIFY_UUID = ""  #handle NOTIFY
@@ -56,7 +58,7 @@ class zengge:
     #self.device = btle.Peripheral(self.mac, addrType=btle.ADDR_TYPE_PUBLIC)    #from bluepy lib
     #self.device.setDelegate(Delegate(self))    #from bluepy lib
 
-    self.device = await BleakScanner.find_device_by_address(self.mac, timeout=10.0)
+    self.device = bluetooth.async_ble_device_from_address(self.hass, self.mac, timeout=10.0, connectable=True)
     if not self.device:
         raise BleakError(f"A device with address {self.mac} could not be found.")
     self.client = BleakClient(self.device)
